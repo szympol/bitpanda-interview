@@ -2,8 +2,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import mongoose from 'mongoose';
 
+import dbConnect from './src/db';
 import setupRoutes from './src/routes';
 
 dotenv.config();
@@ -17,16 +17,7 @@ app.options('*', cors());
 setupRoutes(app);
 
 const main = async () => {
-  if (!process.env.DB_CONNECT_URI) {
-    console.error('Missing required config option: DB_CONNECT_URI');
-    process.exit(1);
-  }
-
-  await mongoose.connect(process.env.DB_CONNECT_URI, {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  });
+  await dbConnect();
 
   let port = parseInt(process.env.LISTEN_PORT || '', 10);
 

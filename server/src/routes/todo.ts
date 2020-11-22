@@ -1,13 +1,39 @@
 import {
   Express,
 } from 'express';
+import {
+  ParsedQs,
+} from 'qs';
 
+import { labels as paginationLabels, defaultValues } from '../schema/pagination-config';
 import Todo from '../schema/Todo';
 
 function escapeRegex(input: string): string {
   // eslint-disable-next-line no-useless-escape
   return input.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 }
+
+const getPaginationOptions = (query: ParsedQs): {
+  limit?: number, offset?: number,
+} => {
+  const getQueryOption = (name: string): number | undefined => {
+    const option = query[name];
+
+    if (Array.isArray(option)) return undefined;
+
+    if (typeof option !== 'string') return undefined;
+
+    return parseInt(option, 10);
+  };
+
+  const limitValue = getQueryOption('limit') ?? defaultValues.limit;
+  const offsetValue = getQueryOption('offset');
+
+  return {
+    ...(limitValue !== undefined && { limit: limitValue }),
+    ...(offsetValue !== undefined && { offset: offsetValue }),
+  };
+};
 
 const setupRoutes = (prefix: string) => (app: Express) => {
   const url = `${prefix}/todo`;
@@ -19,7 +45,11 @@ const setupRoutes = (prefix: string) => (app: Express) => {
       ...(done !== undefined && { done: done === 'true' }),
       ...(description !== undefined && { description: descriptionRegex }),
     };
-    const todoItems = await Todo.find(filter);
+    const paginationOptions = {
+      ...getPaginationOptions(req.query),
+      customLabels: paginationLabels,
+    };
+    const todoItems = await Todo.paginate(filter, paginationOptions);
 
     res.send(todoItems);
   });

@@ -9,12 +9,7 @@ import { defineComponent } from '@vue/composition-api';
 export default defineComponent({
   name: 'App',
   setup() {
-    // utilise todo-bitpanda-server to get data, e.g. using fetch
-    /*
-    fetch('http://localhost:3000/api/v1/todo')
-      .then((resp) => resp.json())
-      .then((data) => console.log(data));
-    */
+    // utilise todo-bitpanda-server to get data
 
     return {
       message: 'Todo list should be here',

@@ -1,8 +1,10 @@
 import {
   Document,
   Schema,
+  PaginateModel,
   model,
 } from 'mongoose';
+import paginate from 'mongoose-paginate-v2';
 
 interface Todo extends Document {
   description: string;
@@ -20,6 +22,10 @@ const TodoSchema = new Schema({
   },
 });
 
-const Todo = model<Todo>('Todo', TodoSchema);
+TodoSchema.plugin(paginate);
+
+interface TodoModel<T extends Document> extends PaginateModel<T> { }
+
+const Todo = model<Todo>('Todo', TodoSchema) as TodoModel<Todo>;
 
 export default Todo;
