@@ -59,6 +59,9 @@ typings/
 # Optional eslint cache
 .eslintcache
 
+#prettier
+.prettierrc.js
+
 # Microbundle cache
 .rpt2_cache/
 .rts2_cache_cjs/

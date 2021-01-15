@@ -1,0 +1,18 @@
+html {
+  font-size: var(--base-font-size);
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  line-height: 1.17em;
+}
+
+.font-weight {
+    &--light {
+        font-weight: 300;
+    }
+    &--extra-light {
+        font-weight: 200;
+    }
+}

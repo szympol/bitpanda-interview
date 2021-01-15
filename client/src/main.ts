@@ -3,6 +3,8 @@ import Vue from 'vue';
 
 import App from './App.vue';
 
+require('typeface-roboto');
+
 Vue.config.productionTip = false;
 
 Vue.use(VueCompositionAPI);

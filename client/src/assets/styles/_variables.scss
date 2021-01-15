@@ -1,0 +1,34 @@
+html {
+	--base-font-size: 16px;
+}
+
+body {
+    --bg-color: #E5E5E5;
+    --bg-content-color: #fff;
+    --bg-secondary-content-color: #FAFAFA;
+
+    --prime-color: #000;
+    --secondary-color: #AEAEAE;
+    --third-color: #787878;
+    --add-note-color: #A8A8A8;
+    --svg-color: #5DC2AF;
+    --search-svg-color: #676767;
+    --caption-color: #5E5E5E;
+
+    --border-color: rgba(0, 0, 0, 0.17);
+}
+
+$space: 1em; // 16px
+$space-1-4: calc(#{$space} * 0.25); // 4px
+$space-1-3: calc(#{$space} * 0.33); // 4.8 px
+$space-1-2: calc(#{$space} * 0.5); // 8px
+$space-2-3: calc(#{$space} * 0.66); // 10.56px
+
+$padding: calc(#{$space} * 1.375); //22px
+
+$checkbox-size: 1.875em;
+$svg-size: .875em;
+
+$max-content-width: 37.5em;
+$radius: .75em;
+$border: 1px solid var(--border-color);

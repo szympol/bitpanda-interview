@@ -1,6 +1,6 @@
 <template lang="pug">
-  #app.todo-app
-    div {{ message }}
+#app.todo-app
+  main {{ message + "lol" }}
 </template>
 
 <script lang="ts">
@@ -19,6 +19,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import 'src/assets/styles/index';
+
 .todo-app {
   text-align: center;
 }
