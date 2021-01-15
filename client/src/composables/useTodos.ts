@@ -39,8 +39,6 @@ export default function useTodos(): {
 
       state.items = items;
       state.meta = meta;
-
-      console.log('🚀 ~ file: useTodos.ts ~ line 35 ~ getTodos ~ data', data);
     } catch (err) {
       console.warn(err as string);
     }
@@ -48,39 +46,52 @@ export default function useTodos(): {
 
   const addNewTodo = async (payload: NewTodo): Promise<void> => {
     try {
-      await add<Todo>(baseUrl, payload);
+      const data = await add<Todo>(baseUrl, payload);
 
-    // const data = await add<Todo>(baseUrl, payload);
-    //   state.items.push(data);
+      state.items = [...state.items, data];
     } catch (err) {
       console.warn(err as string);
     }
-    await getTodos();
   };
 
   const updateTodo = async (id: string, payload: UpdateTodo): Promise<void> => {
     try {
-      await update<Todo>(baseUrl, id, payload);
+      const response = await update<Todo>(baseUrl, id, payload);
+      // eslint-disable-next-line no-underscore-dangle
+      const updatedTodoIdx = state.items.findIndex((todo) => todo._id === id);
+
+      if (updatedTodoIdx === -1) return;
+
+      const firstPartTodos = state.items.slice(0, updatedTodoIdx);
+      const secondPartTodos = state.items.slice(updatedTodoIdx + 1, state.items.length);
+
+      state.items = [...firstPartTodos, response, ...secondPartTodos];
     } catch (err) {
       console.warn(err as string);
     }
-    await getTodos();
-    // eslint-disable-next-line no-underscore-dangle
-    // const updatedTodo = state.items.find((todo) => todo._id === id);
-
-    // if (!updatedTodo) return;
-
-    // updatedTodo.done = payload.done;
   };
 
   const removeTodo = async (id: string): Promise<void> => {
     try {
       await remove(baseUrl, id);
+      // eslint-disable-next-line no-underscore-dangle
+      const todos = state.items.filter((todo) => todo._id !== id);
+
+      state.items = [...todos];
     } catch (err) {
       console.warn(err as string);
     }
-    await getTodos();
   };
+
+  //   const removeAllChecked = (): void => {
+  //     state.items.forEach(async (element: Todo):void => {
+  //       try {
+  //         await remove(baseUrl, element._id);
+  //       } catch (err) {
+  //         console.warn(err as string);
+  //       }
+  //     });
+  //   };
 
   onMounted(async () => {
     await getTodos();

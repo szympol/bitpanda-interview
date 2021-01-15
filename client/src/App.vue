@@ -4,31 +4,52 @@
       ul.todos
         li.todo(
             v-for="(todo, index) in todos"
-        ) {{todo}}
+            :key="todo._id"
+        )
+          div.container
+            span {{todo}}
+            button.update(@click="updateTodo(todo._id, {done: !todo.done})") Update
+            button.remove(@click="removeTodo(todo._id)") Remove
+      input(
+         type="text"
+         v-model="newTodoDescription"
+         placeholder="Take a todo"
+         @keypress.enter="addNewTodo(newTodoPayload)"
+      )
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api';
-
 /* eslint-disable */
+import {
+  defineComponent,
+  ref,
+  computed,
+  reactive,
+  onMounted,
+} from '@vue/composition-api';
 import useTodos from './composables/useTodos';
+import { NewTodo, Todo } from './types/index';
 /* eslint-enable */
 
 export default defineComponent({
   name: 'App',
   setup() {
-    const newTodoDescription = ref('Text');
-    const { todos, updateTodo } = useTodos();
-
-    setTimeout(() => {
-      console.log('trigger');
-      updateTodo('6001a40ea68242001357114c', { done: true });
-    }, 10000);
+    /* eslint-disable */
+    const { todos, addNewTodo, removeTodo, updateTodo } = useTodos();
+    /* eslint-enable */
+    const newTodoDescription = ref('');
+    const newTodoPayload: NewTodo = reactive({
+      description: computed((): string => newTodoDescription.value),
+    });
 
     return {
       message: 'Todo list should be here',
       todos,
       newTodoDescription,
+      newTodoPayload,
+      addNewTodo,
+      removeTodo,
+      updateTodo,
     };
   },
 });
