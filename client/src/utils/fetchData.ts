@@ -42,10 +42,12 @@ export const update = async <T>(url: string, id: string, data: UpdateTodo): Prom
   throw new Error(`${errorMessage} .`);
 };
 
-export const remove = async (url: string, id: string): Promise<void> => {
+export const remove = async (url: string, id: string): Promise<string> => {
   const resp = await fetch(`${url}/${id}`, {
     method: 'DELETE',
   });
 
   if (!resp.ok) throw new Error(`${errorMessage} deleting the todo.`);
+
+  return `This todo ${id} has just been successfully deleted.`;
 };

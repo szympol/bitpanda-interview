@@ -18,6 +18,10 @@
          placeholder="Take a todo"
          @keypress.enter="addNewTodo(newTodoPayload)"
       )
+      button.deleteChecked(
+        type='text'
+        @click="removeAllChecked"
+      ) Remove all done todos
 </template>
 
 <script lang="ts">
@@ -37,7 +41,13 @@ export default defineComponent({
   name: 'App',
   setup() {
     /* eslint-disable */
-    const { todos, addNewTodo, removeTodo, updateTodo } = useTodos();
+    const {
+      todos,
+      addNewTodo,
+      removeTodo,
+      updateTodo,
+      removeAllChecked,
+    } = useTodos();
     /* eslint-enable */
     const newTodoDescription = ref('');
     const newTodoPayload: NewTodo = reactive({
@@ -52,6 +62,7 @@ export default defineComponent({
       addNewTodo,
       removeTodo,
       updateTodo,
+      removeAllChecked,
     };
   },
 });

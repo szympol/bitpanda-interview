@@ -16,6 +16,7 @@ export default function useTodos(): {
     addNewTodo: (payload: NewTodo) => void
     updateTodo: (id: string, payload: UpdateTodo) => void
     removeTodo: (id: string) => void
+    removeAllChecked:() => void
     } {
   const state: State = reactive({
     items: [],
@@ -48,7 +49,7 @@ export default function useTodos(): {
     try {
       const data = await add<Todo>(baseUrl, payload);
 
-      state.items = [...state.items, data];
+      state.items = state.items.length === 0 ? [data] : [...state.items, data];
     } catch (err) {
       console.warn(err as string);
     }
@@ -83,15 +84,15 @@ export default function useTodos(): {
     }
   };
 
-  //   const removeAllChecked = (): void => {
-  //     state.items.forEach(async (element: Todo):void => {
-  //       try {
-  //         await remove(baseUrl, element._id);
-  //       } catch (err) {
-  //         console.warn(err as string);
-  //       }
-  //     });
-  //   };
+  const removeAllChecked = (): void => {
+    const doneTodos = state.items.filter((todo: Todo) => todo.done);
+
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    doneTodos.forEach(async (element: Todo): Promise<void> => {
+      // eslint-disable-next-line no-underscore-dangle
+      await removeTodo(element._id);
+    });
+  };
 
   onMounted(async () => {
     await getTodos();
@@ -103,5 +104,6 @@ export default function useTodos(): {
     addNewTodo,
     updateTodo,
     removeTodo,
+    removeAllChecked,
   };
 }
