@@ -12,7 +12,7 @@ const baseUrl = 'http://localhost:3000/api/v1/todo';
 
 export default function useTodos(): {
     todos: ComputedRef<Todo[]>
-    getTodos: () => void
+    getTodos: (filterDescriptionText: string) => void
     addNewTodo: (payload: NewTodo) => void
     updateTodo: (id: string, payload: UpdateTodo) => void
     removeTodo: (id: string) => void
@@ -33,9 +33,9 @@ export default function useTodos(): {
     },
   });
 
-  const getTodos = async (): Promise<void> => {
+  const getTodos = async (filterDescriptionText = ''): Promise<void> => {
     try {
-      const data = await get<State>(baseUrl);
+      const data = await get<State>(baseUrl, filterDescriptionText);
       const { items, meta } = data;
 
       state.items = items;
@@ -92,6 +92,7 @@ export default function useTodos(): {
       // eslint-disable-next-line no-underscore-dangle
       await removeTodo(element._id);
     });
+    // fetchTodos
   };
 
   onMounted(async () => {

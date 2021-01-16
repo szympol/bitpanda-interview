@@ -18,7 +18,7 @@ body {
     --border-color: rgba(0, 0, 0, 0.17);
 }
 
-$space: 1em; // 16px
+$space: 1rem; // 16px
 $space-1-4: calc(#{$space} * 0.25); // 4px
 $space-1-3: calc(#{$space} * 0.33); // 4.8 px
 $space-1-2: calc(#{$space} * 0.5); // 8px
@@ -26,9 +26,9 @@ $space-2-3: calc(#{$space} * 0.66); // 10.56px
 
 $padding: calc(#{$space} * 1.375); //22px
 
-$checkbox-size: 1.875em;
-$svg-size: .875em;
+$checkbox-size: 1.875rem;
+$svg-size: .875rem;
 
-$max-content-width: 37.5em;
-$radius: .75em;
+$max-content-width: 37.5rem;
+$radius: .75rem;
 $border: 1px solid var(--border-color);

@@ -6,8 +6,10 @@ import { NewTodo, UpdateTodo } from 'src/types/index';
 
 const errorMessage = 'Something wrong happened while';
 
-export const get = async <T>(url: string): Promise<T> => {
-  const resp = await fetch(url);
+export const get = async <T>(url: string, filterDescriptionText = ''): Promise<T> => {
+  const finalUrl = filterDescriptionText.length ? `${url}?description=${filterDescriptionText}` : url;
+
+  const resp = await fetch(finalUrl);
 
   if (resp.ok) return <T>(await resp.json());
 
