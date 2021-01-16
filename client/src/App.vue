@@ -1,31 +1,34 @@
 <template lang="pug">
-  main#app.container
-    div.search
-      BaseInput.search__content(
-        v-model="searchText"
-        placeholder="Search"
-      )
-    ul.todos
-      li.todos__element.todos__header
-        BaseInput.todos__add(
-          v-model="newTodoDescription"
-          @keypress="addNewTodo(newTodoPayload)"
-          placeholder="Take a note"
-        )
-      li.todos__element(
-          v-for="(todo, index) in todos"
-          :key="todo._id"
-      )
-        div.container-todo
-          span {{todo}}
-          button.update(
-            @click="updateTodo(todo._id, {done: !todo.done, description: todo.description})"
-            ) Update
-          button.remove(@click="removeTodo(todo._id)") Remove
-    button.deleteChecked(
-      type='text'
-      @click="removeAllChecked"
-    ) Remove all done todos
+    main#app.container
+        div.search
+            BaseInput.search__content(
+            v-model="searchText"
+            placeholder="Search"
+            )
+        ul.todos
+            li.todos__element.todos__header
+                BaseInput.todos__add(
+                  v-model="newTodoDescription"
+                  @keypress="addNewTodo(newTodoPayload, $refs.inputAddTodo.$el)"
+                  placeholder="Take a note"
+                  ref="inputAddTodo"
+                )
+            li.todos__element(
+                v-for="(todo, index) in todos"
+                :key="todo._id"
+            )
+                div.container-todo
+                    span {{todo}}
+                    button.update(
+                    @click="updateTodo(todo._id, {done: !todo.done, description: todo.description})"
+                    ) Update
+                    button.remove(
+                        @click="removeTodo(todo._id)"
+                    ) Remove
+        button.deleteChecked(
+            type='text'
+            @click="removeAllChecked"
+        )   Remove all done todos
 </template>
 
 <script lang="ts">
@@ -65,6 +68,7 @@ export default defineComponent({
 
     useSearch(searchText, getTodos);
 
+    const inputAddTodo = ref();
     const newTodoDescription = ref('');
     const newTodoPayload: NewTodo = reactive({
       description: computed((): string => newTodoDescription.value),
@@ -79,6 +83,7 @@ export default defineComponent({
       updateTodo,
       removeAllChecked,
       searchText,
+      inputAddTodo,
     };
   },
 });

@@ -13,7 +13,7 @@ const baseUrl = 'http://localhost:3000/api/v1/todo';
 export default function useTodos(): {
     todos: ComputedRef<Todo[]>
     getTodos: (filterDescriptionText: string) => void
-    addNewTodo: (payload: NewTodo) => void
+    addNewTodo: (payload: NewTodo, node: HTMLInputElement) => void
     updateTodo: (id: string, payload: UpdateTodo) => void
     removeTodo: (id: string) => void
     removeAllChecked:() => void
@@ -45,7 +45,12 @@ export default function useTodos(): {
     }
   };
 
-  const addNewTodo = async (payload: NewTodo): Promise<void> => {
+  const addNewTodo = async (payload: NewTodo, node: HTMLInputElement): Promise<void> => {
+    if (payload.description.length === 0) {
+      node.focus();
+      return;
+    }
+
     try {
       const data = await add<Todo>(baseUrl, payload);
 
@@ -84,7 +89,7 @@ export default function useTodos(): {
     }
   };
 
-  const removeAllChecked = (): void => {
+  const removeAllChecked = async (): Promise<void> => {
     const doneTodos = state.items.filter((todo: Todo) => todo.done);
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -92,7 +97,7 @@ export default function useTodos(): {
       // eslint-disable-next-line no-underscore-dangle
       await removeTodo(element._id);
     });
-    // fetchTodos
+    await getTodos();
   };
 
   onMounted(async () => {
