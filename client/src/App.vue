@@ -8,7 +8,9 @@
         )
           div.container
             span {{todo}}
-            button.update(@click="updateTodo(todo._id, {done: !todo.done})") Update
+            button.update(
+              @click="updateTodo(todo._id, {done: !todo.done, description: todo.description})"
+              ) Update
             button.remove(@click="removeTodo(todo._id)") Remove
       input(
          type="text"

@@ -28,5 +28,6 @@ export interface NewTodo {
 }
 
 export interface UpdateTodo {
-  done: boolean
+  done: boolean,
+  description: string
 }
