@@ -1,44 +1,46 @@
 <template lang="pug">
-    main#app.container
-        div.search
-            BaseInput.search__content(
-            v-model="searchText"
-            placeholder="Search"
-            )
-        ul.todos
-            li.todos__element.todos__header
-                BaseInput.todos__add(
-                  v-model="newTodoDescription"
-                  @keypress="todosService.addNewTodo(newTodoPayload, $refs.inputAddTodo.$el)"
-                  placeholder="Take a note"
-                  ref="inputAddTodo"
-                )
-            li.todos__element(
-                v-for="(todo, index) in todosService.todos.value"
-                :key="todo._id"
-            )
-                div.container-todo
-                    span {{todo}}
-                    button.update(
-    @click="todosService.updateTodo(todo._id,{done: !todo.done, description: todo.description})"
-                    ) Update
-                    button.remove(
-                        @click="todosService.removeTodo(todo._id)"
-                    ) Remove
-        button.deleteChecked(
-            type='text'
-            @click="todosService.removeAllChecked"
-        )   Remove all done todos
+  main#app.container
+    div.search
+      BaseInput.search__content(
+        v-model="searchText"
+        placeholder="Search"
+      )
+    ul.todos
+      li.todos__element.todos__header
+        BaseInput.todos__add(
+          v-model="newTodoDescription"
+          @keypress="useTodosService.addNewTodo(newTodoPayload, ()=>{inputAddTodo.$el.focus();})"
+          placeholder="Take a note"
+          ref="inputAddTodo"
+        )
+      li.todos__element(
+        v-for="(todo) in useTodosService.todos.value"
+        :key="todo.id"
+      )
+        div.container-todo
+          span {{todo}}
+          button.update(
+            @click="updateTodo(todo)"
+          ) Update
+          button.remove(
+            @click="useTodosService.removeTodo(todo.id)"
+          ) Remove
+    button.deleteChecked(
+      type='text'
+      @click="useTodosService.removeAllChecked"
+    )   Remove all done todos
 </template>
 
 <script lang="ts">
-/* eslint-disable */
-import { NewTodo } from '@/types/index';
-import { defineComponent, ref, computed, reactive } from '@vue/composition-api';
+import {
+  computed, defineComponent, onMounted, reactive, ref,
+} from '@vue/composition-api';
+
 import BaseInput from '@/components/BaseInput.vue';
-import useTodos from '@/composables/useTodos';
-import useSearch from '@/composables/useSearch';
-/* eslint-enable */
+import useSearch from '@/composables/todos/useSearch';
+import useTodos from '@/composables/todos/useTodos';
+import { NewTodo } from '@/types/models/newTodo';
+import Todo from '@/types/models/todo';
 
 export default defineComponent({
   name: 'App',
@@ -46,24 +48,29 @@ export default defineComponent({
     BaseInput,
   },
   setup() {
-    const todosService = useTodos();
-
+    const useTodosService = useTodos();
     const searchText = ref('');
 
-    useSearch(searchText, todosService.getTodos);
-
+    useSearch(searchText, useTodosService.getTodos);
     const inputAddTodo = ref();
     const newTodoDescription = ref('');
     const newTodoPayload: NewTodo = reactive({
       description: computed((): string => newTodoDescription.value),
     });
 
+    onMounted(() => {
+      useTodosService.getTodos('');
+    });
     return {
-      todosService,
       newTodoDescription,
       newTodoPayload,
       searchText,
       inputAddTodo,
+      useTodosService,
+      updateTodo: (todo: Todo) => useTodosService.updateTodo(todo.id, {
+        done: !todo.done,
+        description: todo.description,
+      }),
     };
   },
 });
@@ -74,7 +81,6 @@ export default defineComponent({
 
 .container {
   max-width: $max-content-width;
-  margin: 0 auto;
-  margin-top: $space;
+  margin: $space auto 0;
 }
 </style>

@@ -8,9 +8,8 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable */
+
 import { defineComponent } from '@vue/composition-api';
-/* eslint-enable */
 
 export default defineComponent({
   name: 'BaseInput',

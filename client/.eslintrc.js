@@ -1,4 +1,3 @@
-/* eslint-disable */
 const { resolve } = require('path');
 
 module.exports = {
@@ -27,37 +26,35 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'import/no-unresolved': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'import/order': [
-      'error',
-      {
-        alphabetize: {
-          caseInsensitive: true,
-          order: 'asc',
-        },
-        groups: [
-          'builtin',
-          'external',
-          'unknown',
-          'internal',
-          ['parent', 'sibling'],
-          'index',
-        ],
-        'newlines-between': 'always',
-        // pathGroups: [
-        //   {
-        //     group: "internal",
-        //     pattern: "@/**",
-        //   },
-        //   {
-        //     group: "internal",
-        //     pattern: "@components/**",
-        //   },
-        // ],
-        pathGroupsExcludedImportTypes: [],
+    'import/order': ['error', {
+      alphabetize: {
+        caseInsensitive: true,
+        order: 'asc',
       },
-    ],
+      groups: [
+        'builtin',
+        'external',
+        'unknown',
+        'internal',
+        ['parent', 'sibling'],
+        'index',
+      ],
+      'newlines-between': 'always',
+      pathGroups: [
+        {
+          group: 'internal',
+          pattern: '@/**',
+        },
+        {
+          group: 'internal',
+          pattern: '@components/**',
+        },
+      ],
+      pathGroupsExcludedImportTypes: [],
+    }],
     'padding-line-between-statements': [
       'error',
       {
