@@ -9,42 +9,35 @@
             li.todos__element.todos__header
                 BaseInput.todos__add(
                   v-model="newTodoDescription"
-                  @keypress="addNewTodo(newTodoPayload, $refs.inputAddTodo.$el)"
+                  @keypress="todosService.addNewTodo(newTodoPayload, $refs.inputAddTodo.$el)"
                   placeholder="Take a note"
                   ref="inputAddTodo"
                 )
             li.todos__element(
-                v-for="(todo, index) in todos"
+                v-for="(todo, index) in todosService.todos.value"
                 :key="todo._id"
             )
                 div.container-todo
                     span {{todo}}
                     button.update(
-                    @click="updateTodo(todo._id, {done: !todo.done, description: todo.description})"
+    @click="todosService.updateTodo(todo._id,{done: !todo.done, description: todo.description})"
                     ) Update
                     button.remove(
-                        @click="removeTodo(todo._id)"
+                        @click="todosService.removeTodo(todo._id)"
                     ) Remove
         button.deleteChecked(
             type='text'
-            @click="removeAllChecked"
+            @click="todosService.removeAllChecked"
         )   Remove all done todos
 </template>
 
 <script lang="ts">
 /* eslint-disable */
-import {
-  defineComponent,
-  ref,
-  computed,
-  reactive,
-  onMounted,
-} from '@vue/composition-api';
-// import { debouncedWatch } from '@vueuse/core';
-import BaseInput from './components/BaseInput.vue';
-import useTodos from './composables/useTodos';
-import useSearch from './composables/useSearch';
-import { NewTodo, Todo } from './types/index';
+import { NewTodo } from '@/types/index';
+import { defineComponent, ref, computed, reactive } from '@vue/composition-api';
+import BaseInput from '@/components/BaseInput.vue';
+import useTodos from '@/composables/useTodos';
+import useSearch from '@/composables/useSearch';
 /* eslint-enable */
 
 export default defineComponent({
@@ -53,20 +46,11 @@ export default defineComponent({
     BaseInput,
   },
   setup() {
-    /* eslint-disable */
-    const {
-      todos,
-      addNewTodo,
-      removeTodo,
-      updateTodo,
-      getTodos,
-      removeAllChecked,
-    } = useTodos();
-    /* eslint-enable */
+    const todosService = useTodos();
 
     const searchText = ref('');
 
-    useSearch(searchText, getTodos);
+    useSearch(searchText, todosService.getTodos);
 
     const inputAddTodo = ref();
     const newTodoDescription = ref('');
@@ -75,13 +59,9 @@ export default defineComponent({
     });
 
     return {
-      todos,
+      todosService,
       newTodoDescription,
       newTodoPayload,
-      addNewTodo,
-      removeTodo,
-      updateTodo,
-      removeAllChecked,
       searchText,
       inputAddTodo,
     };

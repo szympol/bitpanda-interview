@@ -1,8 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
-/* eslint-disable */
+// eslint-disable-next-line import/no-unresolved
 import { NewTodo, UpdateTodo } from 'src/types/index';
-/* eslint-enable */
 
 const errorMessage = 'Something wrong happened while';
 
