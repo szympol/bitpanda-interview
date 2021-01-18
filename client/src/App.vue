@@ -9,7 +9,7 @@
       li.todos__element.todos__header
         BaseInput.todos__add(
           v-model="newTodoDescription"
-          @keypress="useTodosService.addNewTodo(newTodoPayload, ()=>{inputAddTodo.$el.focus();})"
+          @enter="useTodosService.addNewTodo(newTodoPayload, ()=>{inputAddTodo.$el.focus();})"
           placeholder="Take a note"
           ref="inputAddTodo"
         )

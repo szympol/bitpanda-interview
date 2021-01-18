@@ -23,8 +23,9 @@ function getStateInit() {
   });
 }
 
-function setSate(state: State) {
+function setState(state: State) {
   const todosState = state;
+
   const setItems = (items: Todo[]) => {
     todosState.items = items;
   };
@@ -38,12 +39,12 @@ function setSate(state: State) {
   };
 }
 
-export default function useTodos() : UseTodosInterface {
+export default function useTodos(): UseTodosInterface {
   const state: State = getStateInit();
   const {
     setItems,
     setMeta,
-  } = setSate(state);
+  } = setState(state);
 
   return {
     todos: computed(() => state.items),

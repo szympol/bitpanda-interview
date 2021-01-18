@@ -1,7 +1,7 @@
 <template lang="pug">
   input.input(
     @input="$emit('input',$event.target.value)"
-    @keypress.enter="$emit('keypress')"
+    @keyup.enter="$emit('enter')"
     type="text"
     :placeholder="placeholder"
   )
