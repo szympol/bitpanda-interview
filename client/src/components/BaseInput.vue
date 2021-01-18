@@ -19,7 +19,6 @@ export default defineComponent({
       default: '',
     },
   },
-  //   emits: ['update:newTodoDescription'],
   setup() {
     return {};
   },

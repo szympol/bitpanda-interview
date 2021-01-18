@@ -1,34 +1,31 @@
 <template lang="pug">
-  main#app.container
-    div.search
-      BaseInput.search__content(
-        v-model="searchText"
-        placeholder="Search"
-      )
-    ul.todos
-      li.todos__element.todos__header
-        BaseInput.todos__add(
+  div#app.container
+    header.header
+      .header__search
+        BaseInput.header__search-input(
+          v-model="searchText"
+          placeholder="Search"
+        )
+      .header__addNewTodo
+        BaseInput.header__addNewTodo-input(
           v-model="newTodoDescription"
           @enter="useTodosService.addNewTodo(newTodoPayload, ()=>{inputAddTodo.$el.focus();})"
           placeholder="Take a note"
           ref="inputAddTodo"
         )
-      li.todos__element(
-        v-for="(todo) in useTodosService.todos.value"
-        :key="todo.id"
-      )
-        div.container-todo
-          span {{todo}}
-          button.update(
-            @click="updateTodo(todo)"
-          ) Update
-          button.remove(
-            @click="useTodosService.removeTodo(todo.id)"
-          ) Remove
-    button.deleteChecked(
-      type='text'
-      @click="useTodosService.removeAllChecked"
-    )   Remove all done todos
+    main.main
+      ul.todos
+        VTodo(
+          v-for="(todo) in useTodosService.todos.value"
+          :key="todo.id"
+          :todo="todo"
+          @update="updateTodo(todo)"
+          @remove="useTodosService.removeTodo(todo.id)"
+        )
+    section.actions
+      BaseButton(
+        @click-button="useTodosService.removeAllChecked"
+      ) Remove all done notes
 </template>
 
 <script lang="ts">
@@ -36,7 +33,9 @@ import {
   computed, defineComponent, onMounted, reactive, ref,
 } from '@vue/composition-api';
 
+import BaseButton from '@/components/BaseButton.vue';
 import BaseInput from '@/components/BaseInput.vue';
+import VTodo from '@/components/Todo.vue';
 import useSearch from '@/composables/todos/useSearch';
 import useTodos from '@/composables/todos/useTodos';
 import { NewTodo } from '@/types/models/newTodo';
@@ -45,6 +44,8 @@ import Todo from '@/types/models/todo';
 export default defineComponent({
   name: 'App',
   components: {
+    BaseButton,
+    VTodo,
     BaseInput,
   },
   setup() {
@@ -82,5 +83,9 @@ export default defineComponent({
 .container {
   max-width: $max-content-width;
   margin: $space auto 0;
+}
+.todos {
+  list-style-type: none;
+  padding-left: 0;
 }
 </style>
