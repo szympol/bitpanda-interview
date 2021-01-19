@@ -1,17 +1,16 @@
 <template lang="pug">
-  li.todos__element(
-    v-if="todo.description"
-  )
-    BaseCheckbox(
+  li.todo-wrapper
+    BaseCheckbox.todo__checkbox(
       @update="$emit('update')"
       :value="todo.done"
     )
-    p.todos__element-text {{todo.description}}
-    BaseButton(
+    div.todo__content.font-weight--extra-light
+      p.todo__content-text {{todo.description}}
+        span.todo__content-caption - {{timeDiff}}
+    BaseButton.todos__element-button(
       v-if="todo.done"
       @click-button="$emit('remove')"
     ) X
-    span {{timeDiff}}
 </template>
 
 <script lang="ts">
@@ -47,11 +46,33 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-  .todos__element {
-    display:flex;
+@import 'src/assets/styles/index';
+  .todo-wrapper {
+    display: flex;
     align-items: center;
-    > * {
-      margin: 10px;
+    padding: $space-1-3 $space;
+    background-color:var(--bg-content-color);
+    border: $border;
+    &:last-of-type {
+      border-radius: 0 0 $radius $radius;
+    }
+  }
+  .todo__checkbox {
+    margin-right: $space-1-2;
+  }
+  .todos__element-button {
+    margin-left: auto;
+  }
+  .todo__content {
+    display: flex;
+    align-items: center;
+    color: var(--secondary-color);
+    &-text {
+      margin: $space 0;
+    }
+    &-caption {
+      font-size: calc(1rem * 0.625);
+      margin-left: $space-1-4;
     }
   }
 </style>

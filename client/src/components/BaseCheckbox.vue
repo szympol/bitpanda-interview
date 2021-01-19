@@ -1,11 +1,11 @@
 <template lang="pug">
-  label
+  label.checkbox-wrapper
     input.checkbox(
       @change="$emit('update')"
       type="checkbox"
       :checked="value"
     )
-    span
+    span.checkbox__icon
 </template>
 
 <script lang="ts">
@@ -28,36 +28,36 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import 'src/assets/styles/index';
 
-  $checkbox-color: grey;
-  $checkmark-color: white;
-  label {
+  .checkbox-wrapper {
     position: relative;
+    height: $checkbox-size;
+    width: $checkbox-size;
+    cursor: pointer;
   }
-  span {
-    width: 16px;
-    height: 16px;
-    border: 1px solid $checkbox-color;
+  .checkbox__icon {
+    width: inherit;
+    height: inherit;
+    border: 1px solid var(--bg-color);
     display: inline-block;
     border-radius: 50%;
-    transition: all linear 0.3s;
     &:after {
       content: "";
       position: absolute;
-      top: -1px;
-      left: 6px;
-      border-bottom: 2px solid $checkmark-color;
-      border-right: 2px solid $checkmark-color;
-      height: 9px;
-      width: 4px;
-      transform: rotate(45deg);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right:0;
       visibility: hidden;
+      background-image: url('../assets/svgs/checked.svg');
+      background-position: center center;
+      background-repeat: no-repeat;
     }
   }
-  input {
+  .checkbox {
     display: none;
-    &:checked ~ span {
-      background: $checkbox-color;
+    &:checked ~ .checkbox__icon {
       &:after {
         visibility: visible;
       }

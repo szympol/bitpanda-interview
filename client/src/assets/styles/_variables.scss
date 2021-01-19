@@ -6,6 +6,8 @@ body {
     --bg-color: #E5E5E5;
     --bg-content-color: #fff;
     --bg-secondary-content-color: #FAFAFA;
+    --bg-search-color: #DBDBDB;
+    --bg-add-color: rgba(196, 196, 196, 0.09);
 
     --prime-color: #000;
     --secondary-color: #AEAEAE;
@@ -15,7 +17,7 @@ body {
     --search-svg-color: #676767;
     --caption-color: #5E5E5E;
 
-    --border-color: rgba(0, 0, 0, 0.17);
+    --border-color: #C6C6C6;
 }
 
 $space: 1rem; // 16px

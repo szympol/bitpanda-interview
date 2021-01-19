@@ -89,10 +89,12 @@ export default defineComponent({
 
 .container {
   max-width: $max-content-width;
-  margin: $space auto 0;
+  margin: 0 auto;
+  padding: $space-2-3;
 }
 .todos {
   list-style-type: none;
   padding-left: 0;
+  margin:0 0 $space;
 }
 </style>
