@@ -67,7 +67,7 @@ input[type=text] {
   font-weight: 300;
   color: var(--third-color);
   background-color: var( --bg-search-color);
-  background-image: url('../assets/svgs/searchicon.svg');
+  background-image: url('../assets/svgs/search-icon.svg');
   background-position: left $space-1-2 center;
   background-repeat: no-repeat;
   &:focus {
