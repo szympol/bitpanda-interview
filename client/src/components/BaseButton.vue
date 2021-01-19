@@ -1,5 +1,5 @@
 <template lang="pug">
-  button(
+  button.button(
     @click="$emit('click-button')"
   )
     slot
@@ -19,4 +19,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+  .button {
+    background-color: transparent;
+    border: none;
+    outline: 0;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+  }
 </style>

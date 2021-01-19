@@ -20,13 +20,13 @@ body {
     --border-color: #C6C6C6;
 }
 
-$space: 1rem; // 16px
-$space-1-4: calc(#{$space} * 0.25); // 4px
-$space-1-3: calc(#{$space} * 0.33); // 4.8 px
-$space-1-2: calc(#{$space} * 0.5); // 8px
-$space-2-3: calc(#{$space} * 0.66); // 10.56px
+$space: 1rem;
+$space-1-4: calc(#{$space} * 0.25);
+$space-1-3: calc(#{$space} * 0.33);
+$space-1-2: calc(#{$space} * 0.5);
+$space-2-3: calc(#{$space} * 0.66);
 
-$padding: calc(#{$space} * 1.375); //22px
+$padding: calc(#{$space} * 1.375);
 
 $checkbox-size: 1.875rem;
 $svg-size: .875rem;

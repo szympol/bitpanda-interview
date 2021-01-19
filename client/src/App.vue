@@ -24,7 +24,7 @@
           @remove="useTodosService.removeTodo(todo.id)"
         )
     section.actions
-      BaseButton(
+      BaseButton.button-remove-all-checked(
         v-if="isAnyTodoChecked"
         @click-button="useTodosService.removeAllChecked"
       ) Remove all done notes
@@ -96,5 +96,18 @@ export default defineComponent({
   list-style-type: none;
   padding-left: 0;
   margin:0 0 $space;
+}
+.actions {
+  text-align: right;
+}
+.button-remove-all-checked {
+  padding: $space-1-2;
+  color: var(--third-color);
+  background-color: var(--bg-content-color);
+  border-radius: $radius;
+  @include transition(transform);
+  &:hover {
+    transform: scale(1.02);
+  }
 }
 </style>
