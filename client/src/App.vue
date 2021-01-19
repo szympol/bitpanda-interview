@@ -5,11 +5,12 @@
         BaseInput.header__search-input(
           v-model="searchText"
           placeholder="Search"
+          :onEnter="false"
         )
       .header__addNewTodo
         BaseInput.header__addNewTodo-input(
           v-model="newTodoDescription"
-          @enter="useTodosService.addNewTodo(newTodoPayload, ()=>{inputAddTodo.$el.focus();})"
+          @enter="useTodosService.addNewTodo(newTodoPayload, ()=>{inputAddTodo.$el.focus();});"
           placeholder="Take a note"
           ref="inputAddTodo"
         )
@@ -24,6 +25,7 @@
         )
     section.actions
       BaseButton(
+        v-if="isAnyTodoChecked"
         @click-button="useTodosService.removeAllChecked"
       ) Remove all done notes
 </template>
@@ -52,6 +54,8 @@ export default defineComponent({
     const useTodosService = useTodos();
     const searchText = ref('');
 
+    const isAnyTodoChecked = computed(() => useTodosService.todos.value.some((todo) => todo.done));
+
     useSearch(searchText, useTodosService.getTodos);
     const inputAddTodo = ref();
     const newTodoDescription = ref('');
@@ -62,12 +66,15 @@ export default defineComponent({
     onMounted(() => {
       useTodosService.getTodos('');
     });
+
     return {
       newTodoDescription,
       newTodoPayload,
       searchText,
       inputAddTodo,
+      isAnyTodoChecked,
       useTodosService,
+      addNewTodo: useTodosService.addNewTodo,
       updateTodo: (todo: Todo) => useTodosService.updateTodo(todo.id, {
         done: !todo.done,
         description: todo.description,
