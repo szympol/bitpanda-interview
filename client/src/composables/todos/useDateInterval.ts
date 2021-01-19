@@ -1,19 +1,38 @@
-import { onBeforeUnmount, ref, Ref } from '@vue/composition-api';
+import {
+  onBeforeUnmount, ref, Ref, watch,
+} from '@vue/composition-api';
 import { useIntervalFn } from '@vueuse/core';
-import { formatDistanceToNowStrict, parseISO } from 'date-fns';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 
-export default function useDateInterval(updateTime: string): {
+const oneMinuteInterval = 60000;
+
+const getTimeDiffBetweenCurrentAndUpdateDate = (updateTimeParam: string)
+    : string => formatDistanceToNow(parseISO(updateTimeParam),
+  { addSuffix: true });
+
+const getTime = (oldDate:Ref<string>) => (newDate: string):void => {
+  const old = oldDate;
+
+  old.value = newDate;
+};
+
+export default function useDateInterval(initialDate: string): {
   timeDiff: Ref<string>
+  getLastUpdateTime: (newDate: string) => void
   } {
-  const getTimeDiffBetweenCurrentAndUpdateDate = (updateTimeParam: string)
-    : string => formatDistanceToNowStrict(parseISO(updateTimeParam));
+  const currentUpdateDate = ref(initialDate);
+  const timeDiff = ref(getTimeDiffBetweenCurrentAndUpdateDate(currentUpdateDate.value));
 
-  const fiveMinutesInterval = 1000;
-  const timeDiff = ref(getTimeDiffBetweenCurrentAndUpdateDate(updateTime));
+  const getLastUpdateTime: (newDate: string) => void = getTime(currentUpdateDate);
+
+  watch(():string => currentUpdateDate.value,
+    (currentUpdateTime):void => {
+      timeDiff.value = getTimeDiffBetweenCurrentAndUpdateDate(currentUpdateTime);
+    });
 
   const { pause } = useIntervalFn(() => {
-    timeDiff.value = getTimeDiffBetweenCurrentAndUpdateDate(updateTime);
-  }, fiveMinutesInterval);
+    timeDiff.value = getTimeDiffBetweenCurrentAndUpdateDate(currentUpdateDate.value);
+  }, oneMinuteInterval);
 
   onBeforeUnmount(() => {
     pause();
@@ -21,5 +40,6 @@ export default function useDateInterval(updateTime: string): {
 
   return {
     timeDiff,
+    getLastUpdateTime,
   };
 }

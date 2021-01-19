@@ -16,23 +16,28 @@
 
 <script lang="ts">
 
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, PropType, watch } from '@vue/composition-api';
 
 import BaseButton from '@/components/BaseButton.vue';
 import BaseCheckbox from '@/components/BaseCheckbox.vue';
 import useDateInterval from '@/composables/todos/useDateInterval';
+import Todo from '@/types/models/todo';
 
 export default defineComponent({
   name: 'VTodo',
   components: { BaseButton, BaseCheckbox },
   props: {
     todo: {
-      type: Object,
+      type: Object as PropType<Todo>,
+      required: true,
     },
   },
   setup(props) {
-    // fix reactivity issue with updated
-    const { timeDiff } = useDateInterval(props.todo.updatedAt);
+    const { timeDiff, getLastUpdateTime } = useDateInterval(props.todo.updatedAt);
+
+    watch(():string => props.todo.updatedAt, (currentUpdateTime):void => {
+      getLastUpdateTime(currentUpdateTime);
+    });
 
     return {
       timeDiff,
