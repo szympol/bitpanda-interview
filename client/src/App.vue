@@ -14,9 +14,10 @@
           placeholder="Take a note"
           ref="inputAddTodo"
         )
-    main.main.todos
+    main.main
       transition-group(
         name="staggered-fade"
+        class="todos"
         tag="ul"
         :css="false"
         @before-enter="useListAnimationService.beforeEnterAnimation"
@@ -103,12 +104,10 @@ export default defineComponent({
   margin: 0 auto;
   padding: $space-2-3;
 }
-.main {
-  > ul {
-    list-style-type: none;
-    padding-left: 0;
-    margin:0 0 $space;
-  }
+.todos {
+  list-style-type: none;
+  padding-left: 0;
+  margin:0 0 $space;
 }
 .actions {
   text-align: right;
