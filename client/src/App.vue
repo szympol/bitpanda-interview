@@ -14,8 +14,15 @@
           placeholder="Take a note"
           ref="inputAddTodo"
         )
-    main.main
-      ul.todos
+    main.main.todos
+      transition-group(
+        name="staggered-fade"
+        tag="ul"
+        :css="false"
+        @before-enter="useListAnimationService.beforeEnterAnimation"
+        @enter="useListAnimationService.enterAnimation"
+        @leave="useListAnimationService.leaveAnimation"
+      )
         VTodo(
           v-for="(todo) in useTodosService.todos.value"
           :key="todo.id"
@@ -38,6 +45,7 @@ import {
 import BaseButton from '@/components/BaseButton.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import VTodo from '@/components/Todo.vue';
+import useListAnimation from '@/composables/todos/useListAnimation';
 import useSearch from '@/composables/todos/useSearch';
 import useTodos from '@/composables/todos/useTodos';
 import { NewTodo } from '@/types/models/newTodo';
@@ -63,6 +71,8 @@ export default defineComponent({
       description: computed((): string => newTodoDescription.value),
     });
 
+    const useListAnimationService = useListAnimation();
+
     onMounted(() => {
       useTodosService.getTodos('');
     });
@@ -79,6 +89,7 @@ export default defineComponent({
         done: !todo.done,
         description: todo.description,
       }),
+      useListAnimationService,
     };
   },
 });
@@ -92,10 +103,12 @@ export default defineComponent({
   margin: 0 auto;
   padding: $space-2-3;
 }
-.todos {
-  list-style-type: none;
-  padding-left: 0;
-  margin:0 0 $space;
+.main {
+  > ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin:0 0 $space;
+  }
 }
 .actions {
   text-align: right;

@@ -13,6 +13,7 @@
     "@vueuse/core": "^4.0.8",
     "core-js": "3.6.5",
     "date-fns": "^2.16.1",
+    "gsap": "^3.6.0",
     "pug": "3.0.0",
     "pug-plain-loader": "1.0.0",
     "typeface-roboto": "^1.1.13",
